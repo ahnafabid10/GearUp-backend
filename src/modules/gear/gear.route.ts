@@ -1,7 +1,9 @@
 import { Router } from "express";
 import { UserRole } from "../../../generated/prisma/enums";
 import { auth } from "../../middlewares/auth";
+import { validateRequest } from "../../middlewares/validateRequest";
 import { gearController } from "./gear.controller";
+import { gearValidation } from "./gear.validation";
 
 const router = Router();
 
@@ -15,8 +17,16 @@ export const gearRoutes = router;
 const providerRouter = Router();
 providerRouter.use(auth(UserRole.PROVIDER, UserRole.ADMIN));
 providerRouter.get("/my", gearController.getMyGear);
-providerRouter.post("/", gearController.createGear);
-providerRouter.put("/:id", gearController.updateGear);
+providerRouter.post(
+  "/",
+  validateRequest(gearValidation.createGear),
+  gearController.createGear
+);
+providerRouter.put(
+  "/:id",
+  validateRequest(gearValidation.updateGear),
+  gearController.updateGear
+);
 providerRouter.delete("/:id", gearController.deleteGear);
 
 export const providerGearRoutes = providerRouter;

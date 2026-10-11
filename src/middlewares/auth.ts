@@ -31,8 +31,11 @@ export const auth = (...requiredRoles: UserRole[]) => {
     if (!token) {
       return res.status(httpStatus.UNAUTHORIZED).json({
         success: false,
-        statusCode: httpStatus.UNAUTHORIZED,
         message: "You are not logged in. Please log in to access this resource.",
+        errorDetails: {
+          field: "Authorization",
+          error: "Missing authorization token in headers or cookies",
+        },
       });
     }
 
@@ -41,8 +44,11 @@ export const auth = (...requiredRoles: UserRole[]) => {
     if (!verifiedToken.success || !verifiedToken.data) {
       return res.status(httpStatus.UNAUTHORIZED).json({
         success: false,
-        statusCode: httpStatus.UNAUTHORIZED,
         message: verifiedToken.error || "Invalid or expired token. Please log in again.",
+        errorDetails: {
+          field: "Authorization",
+          error: "Token validation failed",
+        },
       });
     }
 
@@ -56,8 +62,11 @@ export const auth = (...requiredRoles: UserRole[]) => {
     if (requiredRoles.length && !requiredRoles.includes(role)) {
       return res.status(httpStatus.FORBIDDEN).json({
         success: false,
-        statusCode: httpStatus.FORBIDDEN,
         message: "Forbidden. You don't have permission to access this resource.",
+        errorDetails: {
+          role,
+          requiredRoles,
+        },
       });
     }
 
@@ -68,16 +77,22 @@ export const auth = (...requiredRoles: UserRole[]) => {
     if (!user) {
       return res.status(httpStatus.UNAUTHORIZED).json({
         success: false,
-        statusCode: httpStatus.UNAUTHORIZED,
         message: "User not found. Please log in again.",
+        errorDetails: {
+          userId: id,
+          error: "User record does not exist",
+        },
       });
     }
 
     if (user.status === "SUSPENDED") {
       return res.status(httpStatus.FORBIDDEN).json({
         success: false,
-        statusCode: httpStatus.FORBIDDEN,
         message: "Your account has been suspended. Please contact admin.",
+        errorDetails: {
+          status: user.status,
+          error: "Account suspended",
+        },
       });
     }
 

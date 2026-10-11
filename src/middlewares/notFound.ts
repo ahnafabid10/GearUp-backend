@@ -4,9 +4,11 @@ import httpStatus from "http-status";
 export const notFound = (req: Request, res: Response) => {
   res.status(httpStatus.NOT_FOUND).json({
     success: false,
-    statusCode: httpStatus.NOT_FOUND,
-    message: "API endpoint not found",
-    path: req.originalUrl,
-    date: new Date(),
+    message: "Route not found",
+    errorDetails: {
+      path: req.originalUrl,
+      method: req.method,
+      timestamp: new Date().toISOString(),
+    },
   });
 };
