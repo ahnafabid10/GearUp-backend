@@ -11,6 +11,10 @@ export const swaggerDocument = {
   },
   servers: [
     {
+      url: "https://gearup-backend-q7w4.onrender.com",
+      description: "Live Production Server",
+    },
+    {
       url: "http://localhost:5000",
       description: "Local Development Server",
     },
