@@ -1,0 +1,20 @@
+{
+    "success": true,
+    "statusCode": 200,
+    "message": "User logged in successfully",
+    "data": {
+        "user": {
+            "id": "68a05ca1-ac3a-4847-a883-74aaeb7b06a0",
+            "name": "Ahnaf Tahmid",
+            "email": "customer@example.com",
+            "role": "CUSTOMER",
+            "status": "ACTIVE",
+            "phone": null,
+            "address": null,
+            "createdAt": "2026-10-12T17:53:46.484Z",
+            "updatedAt": "2026-10-12T17:53:46.484Z"
+        },
+        "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YTA1Y2ExLWFjM2EtNDg0Ny1hODgzLTc0YWFlYjdiMDZhMCIsIm5hbWUiOiJBaG5hZiBUYWhtaWQiLCJlbWFpbCI6ImN1c3RvbWVyQGV4YW1wbGUuY29tIiwicm9sZSI6IkNVU1RPTUVSIiwiaWF0IjoxNzkxODI3NjUxLCJleHAiOjE3OTE5MTQwNTF9.7MwyBB1LLEgdEVFzlerno8FHoFwqVpQOgrcZS_cFL1A",
+        "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YTA1Y2ExLWFjM2EtNDg0Ny1hODgzLTc0YWFlYjdiMDZhMCIsIm5hbWUiOiJBaG5hZiBUYWhtaWQiLCJlbWFpbCI6ImN1c3RvbWVyQGV4YW1wbGUuY29tIiwicm9sZSI6IkNVU1RPTUVSIiwiaWF0IjoxNzkxODI3NjUxLCJleHAiOjE3OTI0MzI0NTF9.vjrToIhwhio4wJ1pK1x0cC2vR-E_lzQyqT8WbsjkoKw"
+    }
+}
