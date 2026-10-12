@@ -1,7 +1,9 @@
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express, { Application, Request, Response } from "express";
+import swaggerUi from "swagger-ui-express";
 import config from "./config";
+import { swaggerDocument } from "./docs/swagger";
 import { globalErrorHandler } from "./middlewares/globalErrorHandler";
 import { notFound } from "./middlewares/notFound";
 import { adminRoutes } from "./modules/admin/admin.route";
@@ -31,10 +33,14 @@ app.use(
   })
 );
 
+// Swagger API Documentation
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 // Health check endpoint
 app.get("/", (req: Request, res: Response) => {
   res.json({
     message: "GearUp Backend API is running! 🏋️",
+    documentation: "/api-docs",
     status: "Healthy",
     timestamp: new Date().toISOString(),
   });
