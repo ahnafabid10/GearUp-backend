@@ -13,21 +13,6 @@
 
 ---
 
-## 📋 Assignment Submission Details
-
-| Field | Submission Value / Link |
-| :--- | :--- |
-| **Project Name** | **GearUp — Rent Sports & Outdoor Gear Instantly (Backend API)** |
-| **GitHub Repository URL** | [https://github.com/ahnafabid10/GearUp-backend](https://github.com/ahnafabid10/GearUp-backend) |
-| **Live Deployed API URL** | [https://gearup-backend-q7w4.onrender.com](https://gearup-backend-q7w4.onrender.com) |
-| **Interactive API Documentation** | [https://gearup-backend-q7w4.onrender.com/api-docs](https://gearup-backend-q7w4.onrender.com/api-docs) |
-| **Database** | PostgreSQL (Neon Cloud Serverless) via Prisma ORM |
-| **Default Admin Email** | `admin@gearup.com` |
-| **Default Admin Password** | `admin123` |
-| **Stripe Payment Testing** | Integrated with Stripe PaymentIntents & Webhooks |
-
----
-
 ## 🔗 Live Links & Documentation
 
 | Resource | URL |
