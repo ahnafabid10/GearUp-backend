@@ -4,7 +4,7 @@ model GearItem {
   description    String
   brand          String
   categoryId     String
-  category       Category      @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  category       Category      @relation(fields: [categoryId], references: [id], onDelete: Restrict)
   providerId     String
   provider       User          @relation(fields: [providerId], references: [id], onDelete: Cascade)
   dailyPrice     Float

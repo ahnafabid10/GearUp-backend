@@ -59,17 +59,6 @@ export const auth = (...requiredRoles: UserRole[]) => {
       role: UserRole;
     };
 
-    if (requiredRoles.length && !requiredRoles.includes(role)) {
-      return res.status(httpStatus.FORBIDDEN).json({
-        success: false,
-        message: "Forbidden. You don't have permission to access this resource.",
-        errorDetails: {
-          role,
-          requiredRoles,
-        },
-      });
-    }
-
     const user = await prisma.user.findUnique({
       where: { id },
     });
@@ -81,6 +70,17 @@ export const auth = (...requiredRoles: UserRole[]) => {
         errorDetails: {
           userId: id,
           error: "User record does not exist",
+        },
+      });
+    }
+
+    if (requiredRoles.length && !requiredRoles.includes(user.role)) {
+      return res.status(httpStatus.FORBIDDEN).json({
+        success: false,
+        message: "Forbidden. You don't have permission to access this resource.",
+        errorDetails: {
+          role: user.role,
+          requiredRoles,
         },
       });
     }
@@ -106,3 +106,4 @@ export const auth = (...requiredRoles: UserRole[]) => {
     next();
   });
 };
+

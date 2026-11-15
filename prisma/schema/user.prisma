@@ -14,6 +14,7 @@ model User {
   rentalOrders RentalOrder[]
   reviews      Review[]
   payments     Payment[]
+  categorySuggestions CategorySuggestion[]
 
   @@map("users")
 }

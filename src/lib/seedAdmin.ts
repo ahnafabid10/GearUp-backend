@@ -4,20 +4,20 @@ import config from "../config";
 import { prisma } from "./prisma";
 
 export const seedAdmin = async () => {
-  const adminEmail = "admin@gearup.com";
-  const adminPassword = "admin123";
+  const adminEmail = config.admin_email || "abidnirob10@gmail.com";
+  const adminPassword = config.admin_password || "123456789";
 
   try {
     const existingAdmin = await prisma.user.findUnique({
       where: { email: adminEmail },
     });
 
-    if (!existingAdmin) {
-      const hashedPassword = await bcrypt.hash(
-        adminPassword,
-        Number(config.bcrypt_salt_rounds)
-      );
+    const hashedPassword = await bcrypt.hash(
+      adminPassword,
+      Number(config.bcrypt_salt_rounds)
+    );
 
+    if (!existingAdmin) {
       await prisma.user.create({
         data: {
           name: "GearUp Super Admin",
@@ -30,7 +30,16 @@ export const seedAdmin = async () => {
         },
       });
 
-      console.log("Default admin seeded: admin@gearup.com / admin123");
+      console.log(`Default admin seeded: ${adminEmail} / ${adminPassword}`);
+    } else {
+      await prisma.user.update({
+        where: { email: adminEmail },
+        data: {
+          role: UserRole.ADMIN,
+          password: hashedPassword,
+        },
+      });
+      console.log(`Admin account updated to ADMIN role: ${adminEmail}`);
     }
   } catch (error) {
     console.error("Error checking or seeding admin:", error);

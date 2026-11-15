@@ -4,10 +4,36 @@ model Category {
   slug        String     @unique
   description String?
   image       String?
+  isActive    Boolean    @default(true)
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
 
   gearItems   GearItem[]
+  suggestions CategorySuggestion[]
 
   @@map("categories")
+}
+
+enum CategorySuggestionStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model CategorySuggestion {
+  id          String @id @default(uuid())
+  name        String
+  slug        String
+  description String?
+  status      CategorySuggestionStatus @default(PENDING)
+  reviewNote  String?
+  providerId  String
+  provider    User @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  categoryId  String?
+  category    Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([providerId, createdAt])
+  @@map("category_suggestions")
 }

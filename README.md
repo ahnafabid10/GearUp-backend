@@ -27,8 +27,8 @@
 
 On initial server startup, an administrator account is automatically seeded into the database:
 
-- **Email:** `admin@gearup.com`
-- **Password:** `admin123`
+- **Email:** `abidnirob10@gmail.com`
+- **Password:** `123456789`
 - **Role:** `ADMIN`
 
 ---

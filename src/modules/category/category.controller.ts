@@ -59,7 +59,24 @@ const deleteCategory = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getManagedCategories = catchAsync(async (_req: Request, res: Response) => {
+  sendResponse(res, {success: true, statusCode: 200, message: "Categories fetched", data: await categoryService.getAllCategories(true)});
+});
+const suggestCategory = catchAsync(async (req: Request, res: Response) => {
+  sendResponse(res, {success: true, statusCode: 201, message: "Suggestion sent for admin review", data: await categoryService.suggestCategory(req.user!.id, req.body)});
+});
+const getSuggestions = catchAsync(async (req: Request, res: Response) => {
+  sendResponse(res, {success: true, statusCode: 200, message: "Suggestions fetched", data: await categoryService.getSuggestions(req.user!.role === "ADMIN" ? undefined : req.user!.id)});
+});
+const reviewSuggestion = catchAsync(async (req: Request, res: Response) => {
+  sendResponse(res, {success: true, statusCode: 200, message: "Suggestion reviewed", data: await categoryService.reviewSuggestion(req.params.id as string, req.body.status, req.body.reviewNote)});
+});
+
 export const categoryController = {
+  getManagedCategories,
+  suggestCategory,
+  getSuggestions,
+  reviewSuggestion,
   createCategory,
   getAllCategories,
   getCategoryById,

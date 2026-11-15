@@ -7,8 +7,8 @@ const createGear = async (providerId: string, payload: ICreateGear) => {
     where: { id: payload.categoryId },
   });
 
-  if (!category) {
-    throw new Error("Category does not exist.");
+  if (!category?.isActive) {
+    throw Object.assign(new Error("Choose an active category."), {statusCode: 400});
   }
 
   const stock = Number(payload.totalStock) || 1;
@@ -248,7 +248,7 @@ const updateGear = async (
     const categoryExists = await prisma.category.findUnique({
       where: { id: payload.categoryId },
     });
-    if (!categoryExists) throw new Error("Category does not exist.");
+    if (!categoryExists || (!categoryExists.isActive && payload.categoryId !== gear.categoryId)) throw Object.assign(new Error("Choose an active category."), {statusCode: 400});
     updateData.category = { connect: { id: payload.categoryId } };
   }
 

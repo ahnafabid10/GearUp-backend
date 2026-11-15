@@ -6,6 +6,7 @@ export interface ICreateCategory {
 }
 
 export interface IUpdateCategory {
+  isActive?: boolean;
   name?: string;
   slug?: string;
   description?: string;
