@@ -17,5 +17,6 @@ router.patch(
 );
 router.get("/gear", adminController.getAllGearListings);
 router.get("/rentals", adminController.getAllRentalOrders);
+router.post("/cleanup-legacy", adminController.cleanupLegacyUsers);
 
 export const adminRoutes = router;

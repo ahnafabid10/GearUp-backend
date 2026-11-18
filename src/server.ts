@@ -3,6 +3,7 @@ import app from "./app";
 import config from "./config";
 import { prisma } from "./lib/prisma";
 import { seedAdmin } from "./lib/seedAdmin";
+import { cleanupLegacyUsers } from "./lib/cleanupUsers";
 
 const PORT = config.port;
 
@@ -13,6 +14,9 @@ async function main() {
 
     // Ensure default working admin account exists
     await seedAdmin();
+
+    // Clean up requested legacy users while preserving their gear listings
+    await cleanupLegacyUsers();
 
     const server = app.listen(PORT, () => {
       console.log(`🚀 GearUp Server is running on port ${PORT}`);

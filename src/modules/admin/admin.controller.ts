@@ -3,6 +3,7 @@ import httpStatus from "http-status";
 import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
 import { adminService } from "./admin.service";
+import { cleanupLegacyUsers as runCleanup } from "../../lib/cleanupUsers";
 
 const getAllUsers = catchAsync(async (req: Request, res: Response) => {
   const result = await adminService.getAllUsers(req.query as any);
@@ -53,9 +54,20 @@ const getAllRentalOrders = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const cleanupLegacyUsers = catchAsync(async (req: Request, res: Response) => {
+  await runCleanup();
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Legacy users cleaned up successfully while preserving gear listings",
+    data: null,
+  });
+});
+
 export const adminController = {
   getAllUsers,
   updateUserStatus,
   getAllGearListings,
   getAllRentalOrders,
+  cleanupLegacyUsers,
 };
