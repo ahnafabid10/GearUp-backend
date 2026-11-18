@@ -35,6 +35,30 @@ const confirmPayment = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const createCheckoutSession = catchAsync(async (req: Request, res: Response) => {
+  const customerId = req.user!.id;
+  const result = await paymentService.createCheckoutSession(customerId, req.body);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.CREATED,
+    message: "Stripe checkout session created successfully",
+    data: result,
+  });
+});
+
+const verifyCheckoutSession = catchAsync(async (req: Request, res: Response) => {
+  const customerId = req.user!.id;
+  const result = await paymentService.verifyCheckoutSession(customerId, req.body);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: result.message,
+    data: result,
+  });
+});
+
 const getPayments = catchAsync(async (req: Request, res: Response) => {
   const customerId = req.user!.id;
   const result = await paymentService.getCustomerPayments(customerId);
@@ -92,6 +116,8 @@ const handleWebhook = async (req: Request, res: Response) => {
 export const paymentController = {
   createPayment,
   confirmPayment,
+  createCheckoutSession,
+  verifyCheckoutSession,
   getPayments,
   getPaymentById,
   handleWebhook,

@@ -19,6 +19,18 @@ router.post(
   validateRequest(paymentValidation.confirmPayment),
   paymentController.confirmPayment
 );
+router.post(
+  "/checkout-session",
+  auth(UserRole.CUSTOMER),
+  validateRequest(paymentValidation.createCheckoutSession),
+  paymentController.createCheckoutSession
+);
+router.post(
+  "/verify-session",
+  auth(UserRole.CUSTOMER),
+  validateRequest(paymentValidation.verifyCheckoutSession),
+  paymentController.verifyCheckoutSession
+);
 router.get("/", auth(UserRole.CUSTOMER), paymentController.getPayments);
 router.get(
   "/:id",
