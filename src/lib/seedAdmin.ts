@@ -4,44 +4,67 @@ import config from "../config";
 import { prisma } from "./prisma";
 
 export const seedAdmin = async () => {
-  const adminEmail = config.admin_email || "abidnirob10@gmail.com";
-  const adminPassword = config.admin_password || "123456789";
+  const adminsToSeed = [
+    {
+      email: config.admin_email || "admin@rentnest.com",
+      password: config.admin_password || "admin123",
+      name: "GearUp Platform Admin",
+    },
+    {
+      email: "admin@rentnest.com",
+      password: "admin123",
+      name: "GearUp Platform Admin",
+    },
+    {
+      email: "abidnirob10@gmail.com",
+      password: "123456789",
+      name: "GearUp Super Admin",
+    },
+  ];
 
-  try {
-    const existingAdmin = await prisma.user.findUnique({
-      where: { email: adminEmail },
-    });
+  const processed = new Set<string>();
 
-    const hashedPassword = await bcrypt.hash(
-      adminPassword,
-      Number(config.bcrypt_salt_rounds)
-    );
+  for (const item of adminsToSeed) {
+    if (processed.has(item.email)) continue;
+    processed.add(item.email);
 
-    if (!existingAdmin) {
-      await prisma.user.create({
-        data: {
-          name: "GearUp Super Admin",
-          email: adminEmail,
-          password: hashedPassword,
-          role: UserRole.ADMIN,
-          status: UserStatus.ACTIVE,
-          phone: "+1234567890",
-          address: "GearUp Headquarter",
-        },
+    try {
+      const existingAdmin = await prisma.user.findUnique({
+        where: { email: item.email },
       });
 
-      console.log(`Default admin seeded: ${adminEmail} / ${adminPassword}`);
-    } else {
-      await prisma.user.update({
-        where: { email: adminEmail },
-        data: {
-          role: UserRole.ADMIN,
-          password: hashedPassword,
-        },
-      });
-      console.log(`Admin account updated to ADMIN role: ${adminEmail}`);
+      const hashedPassword = await bcrypt.hash(
+        item.password,
+        Number(config.bcrypt_salt_rounds || 10)
+      );
+
+      if (!existingAdmin) {
+        await prisma.user.create({
+          data: {
+            name: item.name,
+            email: item.email,
+            password: hashedPassword,
+            role: UserRole.ADMIN,
+            status: UserStatus.ACTIVE,
+            phone: "+1234567890",
+            address: "GearUp Headquarter",
+          },
+        });
+
+        console.log(`Default admin seeded: ${item.email} / ${item.password}`);
+      } else {
+        await prisma.user.update({
+          where: { email: item.email },
+          data: {
+            role: UserRole.ADMIN,
+            status: UserStatus.ACTIVE,
+            password: hashedPassword,
+          },
+        });
+        console.log(`Admin account updated to ADMIN role: ${item.email}`);
+      }
+    } catch (error) {
+      console.error(`Error checking or seeding admin ${item.email}:`, error);
     }
-  } catch (error) {
-    console.error("Error checking or seeding admin:", error);
   }
 };
